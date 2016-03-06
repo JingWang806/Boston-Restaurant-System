@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home</title>
+<meta charset="utf-8">
+<meta name = "format-detection" content = "telephone=no" />
+<!-- <link rel="icon" href="images/favicon.ico"> -->
+<!-- <link rel="shortcut icon" href="images/favicon.ico" /> -->
+<link rel="stylesheet" href="/static/css/stuck.css">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/touchTouch.css">
+<link rel="stylesheet" href="/static/booking/css/booking.css">
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/jquery-migrate-1.1.1.js"></script>
+<!-- <script src="js/superfish.js"></script> -->
+<script src="/static/js/jquery.equalheights.js"></script>
+<!-- <script src="js/jquery.mobilemenu.js"></script> -->
+<script src="/static/js/jquery.easing.1.3.js"></script>
+<script src="/static/js/tmStickUp.js"></script>
+<script src="/static/js/jquery.ui.totop.js"></script>
+<script src="/static/js/touchTouch.jquery.js"></script>
+
+<script>
+ $(document).ready(function(){
+
+  $().UItoTop({ easingType: 'easeOutQuart' });
+  $('#stuck_container').tmStickUp({});
+  $('.gallery .gall_item').touchTouch();
+
+  }); 
+</script>
+<!--[if lt IE 9]>
+ <div style=' clear: both; text-align:center; position: relative;'>
+   <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+     <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+   </a>
+</div>
+<script src="js/html5shiv.js"></script>
+<link rel="stylesheet" media="screen" href="css/ie.css">
+
+
+<![endif]-->
+</head>
+
+<body>
+<!--==============================
+              header
+=================================-->
+<header>
+<!--==============================
+            Stuck menu
+=================================-->
+  <section id="stuck_container">
+    <div class="container">
+      <div class="row">
+        <div class="grid_12">
+        <h1>
+          <a href="/">
+            <img src="/static/images/logo.png" alt="Logo alt">
+          </a>
+        </h1> 
+          <div class="grid_5 preffix_1">
+              <h2><strong class="color1">{{ restaurant.name }}</strong></h2>
+          </div> 
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="{{ url_for('restaurant_info', r_id=restaurant.id) }}">home</a></li>
+               <li><a href="{{ url_for('reserve', r_id=restaurant.id) }}">reservation</a></li>
+               {% if current_user.is_authenticated %}
+               <li><a href="/change-password">{{ current_user.nickname }}</a></li>
+               <li><a href="/logout">Logout</a></li>
+               {% else %}
+               <li><a href="/login?next={{url_for('show_menu', r_id=restaurant.id, m_id=menu.id)}}">Login</a></li>
+               <li><a href="/register?next={{url_for('show_menu', r_id=restaurant.id, m_id=menu.id)}}">Register</a></li>
+               {% endif %}
+             </ul>
+            </nav>          
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> 
+</header>
+
+<!--=====================
+          Content
+======================-->
+<section class="content gallery pad1">
+  <div class="container">
+    <div class="row">
+    {% for food in menu.foods %}
+      <div class="grid_3">
+        <div class="gall_block">
+            <div class="gall_bot">
+            <div class="text1"><a href="#">{{ food.name }}</a></div>
+            {{ food.description }}
+            </div>
+        </div>
+      </div>
+      <!-- <div class="sep__1"></div> -->
+    {% endfor %}
+    </div>
+  </div>
+</section>
+</body>
+</html>
+

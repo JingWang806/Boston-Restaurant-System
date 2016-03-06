@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home</title>
+<meta charset="utf-8">
+<meta name = "format-detection" content = "telephone=no" />
+<!-- <link rel="icon" href="images/favicon.ico"> -->
+<!-- <link rel="shortcut icon" href="images/favicon.ico" /> -->
+<link rel="stylesheet" href="/static/css/stuck.css">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/touchTouch.css">
+<link rel="stylesheet" href="/static/booking/css/booking.css">
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/tmStickUp.js"></script>
+
+
+<!--[if lt IE 9]>
+ <div style=' clear: both; text-align:center; position: relative;'>
+   <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+     <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+   </a>
+</div>
+<script src="js/html5shiv.js"></script>
+<link rel="stylesheet" media="screen" href="css/ie.css">
+
+
+<![endif]-->
+</head>
+
+<body class="page1" id="top">
+<!--==============================
+              header
+=================================-->
+<header>
+<!--==============================
+            Stuck menu
+=================================-->
+  <section id="stuck_container">
+    <div class="container">
+      <div class="row">
+        <div class="grid_12">
+        <h1>
+          <a href="/">
+            <img src="/static/images/logo.png" alt="Logo alt">
+          </a>
+        </h1> 
+          <div class="grid_5 preffix_1">
+              <h2><strong class="color1">{{ restaurant.name }}</strong></h2>
+          </div> 
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li class="current"><a href="{{ url_for('restaurant_info', r_id=restaurant.id) }}">home</a></li>
+               <li><a href="{{ url_for('reserve', r_id=restaurant.id) }}">reservation</a></li>
+               {% if current_user.is_authenticated %}
+               <li><a href="/change-password">{{ current_user.nickname }}</a></li>
+               <li><a href="/logout">Logout</a></li>
+               {% else %}
+               <li><a href="/login?next={{url_for('restaurant_info', r_id=restaurant.id)}}">Login</a></li>
+               <li><a href="/register?next={{url_for('restaurant_info', r_id=restaurant.id)}}">Register</a></li>
+               {% endif %}
+             </ul>
+            </nav>        
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> 
+</header>
+
+<!--=====================
+          Content
+======================-->
+<section class="content">
+  <div class="container">
+  {% if restaurant not in current_user.favorites %}
+  <div class="row">
+    <div class="grid_12 ta__center">
+        <a href="{{ url_for('add_to_favorites', r_id=restaurant.id) }}" class="btn">Add to favorites</a>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="grid_12 ta__center">
+        <a href="{{ url_for('remove_from_favorites', r_id=restaurant.id) }}" class="btn">Remove from favorites</a>
+    </div>
+  </div>
+  {% endif %}
+    <div class="row">
+      <div class="grid_4">
+        <div class="banner">
+		  <div class="gall_block">
+          <img src="/static/images/page1_img1.jpg" alt="">
+          <div class="bann_capt ">
+            <div class="maxheight">
+              <img src="/static/images/icon1.png" alt="">
+              <div class="bann_title">Brunch Menu</div>
+              <a href="{{ url_for('show_menu', m_id=restaurant.menu[0].id, r_id=restaurant.id) }}">detail</a>
+            </div>
+          </div>
+        </div>
+	   </div>
+      </div>
+      <div class="grid_4">
+        <div class="banner">
+		  <div class="gall_block">
+          <div class="bann_capt  bn__1">
+            <div class="maxheight">
+              <img src="/static/images/icon2.png" alt="">
+              <div class="bann_title">Lunch Menu</div>
+              <a href="{{ url_for('show_menu', m_id=restaurant.menu[1].id, r_id=restaurant.id) }}">detail</a>
+            </div>
+          </div>
+          <img src="/static/images/page1_img2.jpg" alt="">
+        </div>
+		</div>
+      </div>
+      <div class="grid_4">
+        <div class="banner ">
+		  <div class="gall_block">
+          <img src="/static/images/page1_img3.jpg" alt="">
+          <div class="bann_capt  bn__2">
+            <div class="maxheight">
+              <img src="/static/images/icon3.png" alt="">
+              <div class="bann_title">Dinner Menu</div>
+              <a href="{{ url_for('show_menu', m_id=restaurant.menu[2].id, r_id=restaurant.id) }}">detail</a>
+            </div>
+          </div>
+		  </div>
+        </div>
+      </div>
+      <div class="grid_12">
+        <div class="box">
+          <div class="row">
+            <div class="grid_5 preffix_3">
+              <h2>Our Location</h2>
+              <p><strong class="color1">{{ restaurant.address }}</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--       <div class="grid_12">
+        <h2>Dishes for You to Try</h2>
+      </div>
+      <div class="gallery">
+        <div class="grid_4"><a href="images/big1.jpg" class="gall_item"><img src="images/page1_img4.jpg" alt=""></a><a href="#" class="link1">+</a><div class="clear"></div></div>
+        <div class="grid_4"><a href="images/big2.jpg" class="gall_item"><img src="images/page1_img5.jpg" alt=""></a><a href="#" class="link1">+</a><div class="clear"></div></div>
+        <div class="grid_4"><a href="images/big3.jpg" class="gall_item"><img src="images/page1_img6.jpg" alt=""></a><a href="#" class="link1">+</a><div class="clear"></div></div>
+      </div> -->
+
+      <div class="grid_12">
+        <h2>Reviews</h2>
+      </div>
+      {% for review in restaurant.reviews %}
+      <div class="grid_4">
+        <h2>Rating: {{review.rating}}</h2>
+        <blockquote class="bq1">
+          <div class="extra_wrapper">
+            <strong >User</strong> <div class="bq_title color1">{{ review.user.nickname }}</div>
+            {{ review.content }}
+          </div>
+        </blockquote>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <div class="grid_12 ta__center">
+        <h2>Post Review</h2>
+        <form id="bookingForm" action="{{ url_for('restaurant_reviews', r_id=restaurant.id) }}" method="POST">
+          <strong class="form_title color1">Rating</strong>
+          <div class="clear f_sep1"></div>
+          <select name="rating" class="tmSelect" data-class="tmSelect2">
+            <option>Good</option>
+            <option>Average</option>
+            <option>Bad</option>
+          </select>
+          <strong class="form_title color1">Content</strong>
+          <div class="clear f_sep1"></div>
+          <div class="tmTextarea">
+              <textarea name="content" placeHolder="Write your review here:" data-constraints='@NotEmpty @Required @Length(min=1,max=200)'></textarea>
+          </div>
+          <div class="ta__right">
+            <a href="#" class="btn" data-type="submit" onclick="$(this).closest('form').submit()">Send</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
+

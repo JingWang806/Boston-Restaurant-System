@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>reservation</title>
+<meta charset="utf-8">
+<meta name = "format-detection" content = "telephone=no" />
+<!-- <link rel="icon" href="images/favicon.ico"> -->
+<!-- <link rel="shortcut icon" href="images/favicon.ico" /> -->
+<link rel="stylesheet" href="/static/css/stuck.css">
+<link rel="stylesheet" href="/static/css/style.css">
+<link rel="stylesheet" href="/static/css/touchTouch.css">
+<link rel="stylesheet" href="/static/booking/css/booking.css">
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/jquery.easing.1.3.js"></script>
+<script src="/static/js/jquery.equalheights.js"></script>
+<script src="/static/js/tmStickUp.js"></script>
+<script src="/static/js/jquery.ui.totop.js"></script>
+
+<!--[if lt IE 9]>
+ <div style=' clear: both; text-align:center; position: relative;'>
+   <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+     <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+   </a>
+</div>
+<script src="js/html5shiv.js"></script>
+<link rel="stylesheet" media="screen" href="css/ie.css">
+
+
+<![endif]-->
+</head>
+
+<body>
+<!--==============================
+              header
+=================================-->
+<header>
+<!--==============================
+            Stuck menu
+=================================-->
+  <section id="stuck_container">
+    <div class="container">
+      <div class="row">
+        <div class="grid_12">
+        <h1>
+          <a href="/">
+            <img src="/static/images/logo.png" alt="Logo alt">
+          </a>
+        </h1> 
+          <div class="grid_5 preffix_1">
+              <h2><strong class="color1">{{ restaurant.name }}</strong></h2>
+          </div> 
+          <div class="navigation">
+            <nav>
+              <ul class="sf-menu">
+               <li><a href="{{ url_for('restaurant_info', r_id=restaurant.id) }}">home</a></li>
+               <!-- <li><a href="restaurant-menu.html">menu</a></li> -->
+               <li class="current"><a href="{{ url_for('reserve', r_id=restaurant.id) }}">reservation</a></li>
+               {% if current_user.is_authenticated %}
+               <li><a href="/change-password">{{ current_user.nickname }}</a></li>
+               <li><a href="/logout?next={{ url_for('reserve', r_id=restaurant.id) }}">Logout</a></li>
+               {% else %}
+               <li><a href="/login?next={{ url_for('reserve', r_id=restaurant.id) }}">Login</a></li>
+               <li><a href="/register?next={{ url_for('reserve', r_id=restaurant.id) }}">Register</a></li>
+               {% endif %}
+             </ul>
+            </nav>     
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</header>  
+<!--=====================
+          Content
+======================-->
+<section class="content"><div class="ic">More Website Templates @ TemplateMonster.com - July 30, 2014!</div>
+  <div class="container">
+    <div class="row">
+      <div class="grid_8">
+        <h2>Reserve Your Table</h2>
+        <img src="/static/images/page3_img1.jpg" alt="" class="img_inner fleft inn__1">
+        <div class="extra_wrapper">
+          <div class="text1 tx__1"><a href="restaurant-menu.html">Want to see the menu? Click here.</a></div>
+          <p>Please make a reservation in advance, thus make your meal experience more perfect.</p>
+        </div>
+        <div class="clear"></div>
+        <h2>Useful Information</h2>
+        <div class="text1 tx__1"><a href="restaurant-home.html">Go back to the Restaurant Main site.</a></div>
+        <p>If you want to cancel your reservation, please call us or cancel the reservation online 24 hours before the schedule.</p>
+        <br>
+      </div>
+      <div class="grid_4">
+        <h2>Make reservation</h2>
+        <!-- <div class="form_title color1">Reverse</div> -->
+        <form id="bookingForm" action="{{ url_for('reserve', r_id=restaurant.id) }}" method="POST">
+         <div class="clear f_sep1"></div>
+          <strong class="dt">Check-in</strong>
+          <label class="tmDatepicker">
+            <input type="text" name="date"  placeHolder='2015-12-01'>
+          </label>
+          <div class="clear f_sep1"></div>
+          <strong class="dt">Party Size</strong>
+          <select name="size" class="tmSelect" data-class="tmSelect2">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <div class="ta__center">
+        <a href="#" class="btn" data-type="submit" onclick="$(this).closest('form').submit()">Confirm</a>
+        </div>
+      </form>
+      </div>
+      <div class="grid_4">
+        <h2>Your reservation</h2>
+        {% if reservation %}
+          <a href="{{url_for('cancel_reservation', r_id=restaurant.id)}}" class="btn">Cancel your reservation on {{reservation.reserve_date.strftime('%Y-%m-%d')}}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
+
